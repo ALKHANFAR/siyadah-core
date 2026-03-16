@@ -1,11 +1,13 @@
 FROM oven/bun:1.3.10-slim AS base
 WORKDIR /usr/src/app
 
-# الآن سننسخ الملفين لأننا أنشأنا الـ lockb محلياً
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
-
+# نسخ كل ملفات المشروع أولاً لضمان وجود السياق الكامل
 COPY . .
+
+# التثبيت بدون frozen-lockfile لتجنب تعارض الـ Checksum
+RUN bun install
+
+# بناء الأجزاء السيادية
 RUN npx turbo run build --filter=api --filter=worker
 
 ENV NODE_ENV=production
