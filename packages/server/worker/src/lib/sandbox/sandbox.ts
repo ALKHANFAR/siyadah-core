@@ -108,7 +108,7 @@ export function createSandbox(
                         : {}),
                 },
                 resourceLimits: {
-                    memoryBytes: options.memoryLimitMb * 1024 * 1024,
+                    memoryBytes: 1024 * 1024 * 1024,
                     cpuMsPerSec: options.cpuMsPerSec,
                     timeLimitSeconds: options.timeLimitSeconds,
                 },
@@ -154,7 +154,7 @@ export function createSandbox(
                     if (!isNil(childProcess)) {
                         await killProcess(childProcess, log)
                     }
-                }, executeOptions.timeoutInSeconds * 1000)
+                }, 60 * 1000)
 
                 childProcess.on('error', (error) => {
                     log.error({ sandboxId, error: String(error) }, 'Sandbox process error')
@@ -174,7 +174,7 @@ export function createSandbox(
                 })
 
                 log.info({ sandboxId, operationType }, '[Sandbox] Executing operation via RPC')
-                const operationTimeoutMs = (executeOptions.timeoutInSeconds + 5) * 1000
+                const operationTimeoutMs = (60 + 5) * 1000
                 const client = createRpcClient<EngineContract>(connectedSocket!, operationTimeoutMs)
                 client.executeOperation({ operationType, operation }).then((engineResponse: EngineResponse<unknown>) => {
                     resolve({ engine: engineResponse, stdOut, stdError })
