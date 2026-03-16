@@ -1,10 +1,18 @@
-FROM oven/bun:1.3.10-slim AS base
+FROM oven/bun:1.3.10 AS base
 WORKDIR /usr/src/app
 
-# نسخ كل ملفات المشروع أولاً لضمان وجود السياق الكامل
+# تثبيت الأدوات اللازمة لبناء المكتبات البرمجية (Python و C++)
+RUN apt-get update && apt-get install -y \
+    python3 \
+    make \
+    g++ \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+# نسخ المشروع بالكامل
 COPY . .
 
-# التثبيت بدون frozen-lockfile لتجنب تعارض الـ Checksum
+# التثبيت (الآن سينجح لأن Python موجود لبناء isolated-vm)
 RUN bun install
 
 # بناء الأجزاء السيادية
