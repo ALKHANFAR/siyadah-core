@@ -1,8 +1,8 @@
 FROM oven/bun:1.3.10-slim AS base
 WORKDIR /usr/src/app
+COPY package.json ./
 
-COPY package.json bun.lockb ./
-RUN bun install --frozen-lockfile
+RUN bun install
 
 COPY . .
 RUN npx turbo run build --filter=api --filter=worker
