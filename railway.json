@@ -1,0 +1,13 @@
+{
+  "$schema": "https://railway.app/standard-schema.json",
+  "build": {
+    "builder": "DOCKERFILE",
+    "dockerfilePath": "Siyadah.Dockerfile"
+  },
+  "deploy": {
+    "startCommand": "node packages/server/api/dist/index.js",
+    "healthcheckPath": "/health",
+    "restartPolicyType": "ON_FAILURE",
+    "numReplicas": 1
+  }
+}
