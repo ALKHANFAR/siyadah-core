@@ -1,6 +1,5 @@
 FROM oven/bun:1.3.10 AS base
 WORKDIR /usr/src/app
-
 RUN apt-get update && apt-get install -y python3 build-essential git jq curl && \
     curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get install -y nodejs && \
